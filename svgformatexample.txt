@@ -1,0 +1,35 @@
+"""
+01: <?xml version="1.0" standalone="no"?>
+02: <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+     "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+03:
+04: <svg width="500" height="300">
+05:
+06:   <defs>
+07:     <rect id="peg" width="50" height="50"/>
+08:     <use id="pegRed" xlink:href="#peg" style="fill:red; stroke:black;"/>
+09:     <use id="pegWhite" xlink:href="#peg" style="fill:white; stroke:black;"/>
+10:     <g id="columnRed">
+11:       <use xlink:href="#pegRed" x="100" y="50"/>
+12:       <use xlink:href="#pegWhite" x="100" y="100"/>
+13:       <use xlink:href="#pegRed" x="100" y="150"/>
+14:       <use xlink:href="#pegWhite" x="100" y="200"/>
+15:     </g>
+16:     <g id="columnWhite">
+17:       <use xlink:href="#pegWhite" x="150" y="50"/>
+18:       <use xlink:href="#pegRed" x="150" y="100"/>
+19:       <use xlink:href="#pegWhite" x="150" y="150"/>
+20:       <use xlink:href="#pegRed" x="150" y="200"/>
+21:     </g>
+22:   </defs>
+23:
+24:   <use xlink:href="#columnRed" x="0" y="0"/>
+25:   <use xlink:href="#columnWhite" x="0" y="0"/>
+26:   <use xlink:href="#columnRed" x="100" y="0"/>
+27:   <use xlink:href="#columnWhite" x="100" y="0"/>
+28:   <use xlink:href="#columnRed" x="200" y="0"/>
+29:   <use xlink:href="#columnWhite" x="200" y="0"/>
+30:
+31: </svg>
+
+"""

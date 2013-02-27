@@ -26,7 +26,7 @@ class Device:
     
     def info(self):
         return "Make : %s Model : %s Serial : %s  Firmware : %s" % (self.make,self.model, self.serial, self.firmware)
-
+    
 class Transciever(Device):
     def __init__(self):
         Device.__init__(self)        
@@ -45,7 +45,11 @@ class SwitchPort():
         self.destination = ""
         self.hasTransciever = False
         self.transciever = 0
+        self.svg = '<symbol id="rj45">  <rect x=0  y=0 widht=12mm height= 9mm> </symbol>'
         
+    def svgSymbol(self):
+        return svg
+    
     def addTransciever(self, tcv):
         self.transciever = tcv
     
@@ -57,10 +61,25 @@ class SwitchPort():
     
     def setType(self, typ):
         self.portType = typ
-
+            
     def info(self):
         t = "port no: %s port speed : %d  port type : %s" % (self.portNo, self.portSpeed, self.portType)
         return t
+
+class SwitchPortFiber(SwitchPort):
+    def __init__(self):
+        SwitchPort.__init__(self)
+        self.placeHolder = 0
+        
+class SwitchPortLC(SwitchPortFiber):
+    def __init__(self):
+        SwitchPortFiber.__init__(self)
+        self.svg = '<symbol id=fbLC> <rect x=0  y=0 widht=12mm height=9mm> <rect x=3  y=3 widht=6mm height= 3mm> </symbol>'
+
+class SwitchPortCX4(SwitchPort):
+    def __init__(self):
+        SwitchPort.__init__(self)
+        self.svg = '<symbol id=cx4> <rect x=0  y=0 widht=12mm height=9mm> <rect x=3  y=3 widht=6mm height= 3mm> </symbol>'
 
 class SwitchModule(Device):
     def __init__(self):
