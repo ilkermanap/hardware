@@ -33,13 +33,20 @@ m1.setPortCount(2)
 m2.setPortCount(4)
 m3.setPortCount(16)
 
+m3.setAllPortSpeed(100)
+
+
+yy = SwitchPortLC()
+xx = SwitchPortCX4()
+xx.portNo = 15
+m3.ports[15] = xx
+print xx.svg
+
 m1.setMake("HP")
 m1.setModel("CX4 10GB Module")
 
 
 m1.setAllPortSpeed(10000)
-m3.setAllPortSpeed(100)
-
 z.setSlotModule(4,m1)
 z.setSlotModule(6,m2)
 z.setSlotModule(1,m3)
