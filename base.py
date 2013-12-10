@@ -1,11 +1,24 @@
 import math
 
+
+units = {
+  'm->dm':10,'m->cm':100, 'm->mm':1000,'m->km':0.001,
+  'm2->dm2':100,'m2->cm2':10000, 'm2->mm2':1000000,'m2->km2':0.000001,
+  'm3->dm3':1000,'m3->cm3':1000000, 'm3->mm3':1000000000,'m3->km3':0.000000001
+  }
+
+def unitConvert(inVal, inUnit, outUnit):
+  
+  return 0
+  
+
 class Point:
   def __init__(self, x = 0, y = 0, color="black"):
     self.x = x
     self.y = y
     self.color = color
     self.zoomLevel = 1
+    self.area = 0
 
   def setColor(self, _color):
     self.color = _color
@@ -13,21 +26,24 @@ class Point:
   def getPolyPoint(self, zoomLevel = 1):
     return "%.3f,%.3f " % (self.x * zoomLevel, self.y * zoomLevel)
 
-  def drawSVG(self, zoomLevel = 1):
-    x1 = (self.x * 1.0) * zoomLevel
-    y1 = (self.y * 1.0) * zoomLevel
-    x2 = ((self.x + 1) * 1.0) * zoomLevel
-    y2 = (self.y * 1.0) * zoomLevel
-    
-    svgText = '<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="%s">' \
-              % (x1, y1, x2, y2, self.color)
-    return svgText
+  def svgText(self, zoomLevel = 1):
+    if zoomLevel >= 1:
+      r = zoomLevel 
+      x1 = (self.x * 1.0) * zoomLevel
+      y1 = (self.y * 1.0) * zoomLevel
+      text = '<circle cx="%d" cy="%d" r="%d" stroke="%s" stroke-width="1" fill="%s"/>' \
+          % (x1,y1, r,  self.color, self.color)
+      return text
+    else:
+      return ""
 
 class  Line:
-  def __init__(self, x1=0, y1=0, x2=0, y2=0, _color = "black"):
+  def __init__(self, x1=0, y1=0, x2=0, y2=0, color = "black", unit="cm"):
     self.start = Point(x1, y1)
     self.finish = Point(x2, y2)
-    self.color = _color
+    self.color = color
+    self.area = 0
+    self.unit = unit
 
   def lineLength(self):
     _x = self.finish.x - self.start.x
@@ -36,7 +52,7 @@ class  Line:
     _yy = _y ** 2
     return math.sqrt(_xx + _yy)
 
-  def drawSVG(self, zoomLevel=1):
+  def svgText(self, zoomLevel=1):
     l = self.lineLength() * zoomLevel
     x1 = (self.start.x * 1.0) * zoomLevel
     y1 = (self.start.y * 1.0) * zoomLevel
@@ -45,12 +61,12 @@ class  Line:
     
     
     if (l >= 1):
-      svgText ='<line x1="%.3f" y1="%.3f" x2="%.3f" y2="%.3f" stroke="%s">'\
+      text ='<line x1="%.3f" y1="%.3f" x2="%.3f" y2="%.3f" stroke="%s">'\
           % (x1, y1, x2, y2, self.color)
     else:
-      svgText = ""
+      text = ""
 
-    return svgText
+    return text
 
 class Rect:
   def __init__(self, color = "black", x=0, y=0, width=0, height=0 , zoomLevel=1, fill = "none"):
@@ -62,7 +78,8 @@ class Rect:
     self.height = height
     self.fill = fill
 
-  def drawSVG(self, zoomLevel = 1):
+
+  def svgText(self, zoomLevel = 1):
     x = self.x * zoomLevel
     y = self.y * zoomLevel
     w = self.width * zoomLevel
@@ -75,7 +92,7 @@ class Rect:
     return text
   
   def area(self):
-    return (self.width * self.height)
+    return (self.width * self.height * (self.zoomLevel ** 2))
         
 
 class Polygon:
@@ -94,7 +111,7 @@ class Polygon:
   def addPoint(self, point):
     self.points.append(point)
 
-  def drawSVG(self, zoomLevel = 1):
+  def svgText(self, zoomLevel = 1):
     text = "<polygon points=\""
     for p in self.points:
       text += p.getPolyPoint(zoomLevel= zoomLevel)
@@ -109,16 +126,17 @@ class Polyline(Polygon):
     return x
 
 
-class base:
+class Base:
   def __init__(self):
     self.x = 0
     self.y = 0
     self.z = 0
     
+    
 # def __init__(self, color = "black", x=0, y=0, width=0, height=0 , zoomLevel=1, fill = "none"):    
 
 r = Rect(x=100, y=100, width=150,height=200)
-print r.drawSVG(zoomLevel=0.05)
+print r.svgText(zoomLevel=0.5)
 
 y = Polyline(points="0,0,10,0,10,10,0,10")
-print y.drawSVG(zoomLevel=3.1456)
+print y.svgText(zoomLevel=0.87)
