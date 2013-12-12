@@ -8,8 +8,26 @@ units = {
   }
 
 def unitConvert(inVal, inUnit, outUnit):
-  
-  return 0
+  """
+   expect parameters as  (123,"mm", "km")  or (15,"m2", "mm2") 
+   or (45,"dm2","m2")
+
+  """
+  conv = "%s->%s" % (inUnit,outUnit)
+  if inUnit == outUnit:
+    return inVal
+  if conv in units.keys():
+    return inVal * units[conv] * 1.0
+  else:
+    search = "->%s" % inUnit
+    for k in units.keys():
+      pos = k.find(search)
+      if pos > -1:
+        if ((pos + len(search)) == len(k)):
+          newInUnit = k.split("->")[0]
+          newVal = inVal / (units[k] * 1.0)
+          return unitConvert(newVal, newInUnit, outUnit)
+  return None
   
 
 class Point:
@@ -136,7 +154,7 @@ class Base:
 # def __init__(self, color = "black", x=0, y=0, width=0, height=0 , zoomLevel=1, fill = "none"):    
 
 r = Rect(x=100, y=100, width=150,height=200)
-print r.svgText(zoomLevel=0.5)
+#print r.svgText(zoomLevel=0.5)
 
 y = Polyline(points="0,0,10,0,10,10,0,10")
-print y.svgText(zoomLevel=0.87)
+#print y.svgText(zoomLevel=0.87)
